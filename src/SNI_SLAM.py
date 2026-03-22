@@ -272,6 +272,8 @@ class SNI_SLAM():
             processes.append(p)
         for p in processes:
             p.join()
+        print("TODO: mesher.get_mesh()")
+        # self.mesher.get_mesh()
 
 # This part is required by torch.multiprocessing
 if __name__ == '__main__':

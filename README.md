@@ -1,3 +1,5 @@
+# CUSTOM COPY OF SNI-SLAM - NOT THE ORIGINAL REPOSITORY
+
 # SNI-SLAM: Semantic Neural Implicit SLAM
 Siting Zhu*, Guangming Wang*, Hermann Blum, Jiuming Liu, Liang Song, Marc Pollefeys, Hesheng Wang
 <div align="center">
