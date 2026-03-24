@@ -1,5 +1,7 @@
 # CUSTOM COPY OF SNI-SLAM - NOT THE ORIGINAL REPOSITORY
 
+`python3 -W ignore run.py config.yaml`
+
 # SNI-SLAM: Semantic Neural Implicit SLAM
 Siting Zhu*, Guangming Wang*, Hermann Blum, Jiuming Liu, Liang Song, Marc Pollefeys, Hesheng Wang
 <div align="center">

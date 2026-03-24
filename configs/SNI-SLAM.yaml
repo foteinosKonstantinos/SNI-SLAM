@@ -47,7 +47,7 @@ mapping:
   no_log_on_first_frame: True
   vis_freq: 360
   vis_inside_freq: 400
-  mesh_freq: 4000
+  mesh_freq: 40
   ckpt_freq: 500
   keyframe_every: 4
   mapping_window_size: 5

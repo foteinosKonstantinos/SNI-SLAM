@@ -114,7 +114,7 @@ class SNI_SLAM():
         self.logger = Logger(self)
         self.mapper = Mapper(cfg, args, self)
         self.tracker = Tracker(cfg, args, self)
-        self.print_output_desc()
+        # self.print_output_desc()
 
     def print_output_desc(self):
         print(f"INFO: The output folder is {self.output}")
@@ -197,21 +197,22 @@ class SNI_SLAM():
         s_planes_res = [self.coarse_s_planes_res, self.fine_s_planes_res]
 
         planes_dim = c_dim
-        for grid_res in planes_res:
+        for grid_res in planes_res: # both coarse and fine, TSDF whatever ???
             grid_shape = list(map(int, (xyz_len / grid_res).tolist()))
             grid_shape[0], grid_shape[2] = grid_shape[2], grid_shape[0]
-            planes_xy.append(torch.empty([1, planes_dim, *grid_shape[1:]]).normal_(mean=0, std=0.01))
-            planes_xz.append(torch.empty([1, planes_dim, grid_shape[0], grid_shape[2]]).normal_(mean=0, std=0.01))
-            planes_yz.append(torch.empty([1, planes_dim, *grid_shape[:2]]).normal_(mean=0, std=0.01))
+            # Fills tensor with elements samples from the normal distribution parameterized by mean and std.
+            planes_xy.append(torch.empty([1, planes_dim, *grid_shape[1:]]).normal_(mean=0, std=0.01)) # 1, 2
+            planes_xz.append(torch.empty([1, planes_dim, grid_shape[0], grid_shape[2]]).normal_(mean=0, std=0.01)) # 0, 2
+            planes_yz.append(torch.empty([1, planes_dim, *grid_shape[:2]]).normal_(mean=0, std=0.01)) # 0, 1
 
-        for grid_res in c_planes_res:
+        for grid_res in c_planes_res: # both coarse and fine, color grid (?)
             grid_shape = list(map(int, (xyz_len / grid_res).tolist()))
             grid_shape[0], grid_shape[2] = grid_shape[2], grid_shape[0]
             c_planes_xy.append(torch.empty([1, planes_dim, *grid_shape[1:]]).normal_(mean=0, std=0.01))
             c_planes_xz.append(torch.empty([1, planes_dim, grid_shape[0], grid_shape[2]]).normal_(mean=0, std=0.01))
             c_planes_yz.append(torch.empty([1, planes_dim, *grid_shape[:2]]).normal_(mean=0, std=0.01))
 
-        for grid_res in s_planes_res:
+        for grid_res in s_planes_res: # both coarse and fine, semantic grid (?)
             grid_shape = list(map(int, (xyz_len / grid_res).tolist()))
             grid_shape[0], grid_shape[2] = grid_shape[2], grid_shape[0]
             s_planes_xy.append(torch.empty([1, planes_dim, *grid_shape[1:]]).normal_(mean=0, std=0.01))
@@ -272,7 +273,7 @@ class SNI_SLAM():
             processes.append(p)
         for p in processes:
             p.join()
-        print("TODO: mesher.get_mesh()")
+        print("warning: mesh is not generated automatically")
         # self.mesher.get_mesh()
 
 # This part is required by torch.multiprocessing

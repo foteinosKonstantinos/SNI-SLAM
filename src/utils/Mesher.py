@@ -102,6 +102,7 @@ class Mesher(object):
                 convert_rgb_to_intensity=False)
             volume.integrate(rgbd, intrinsic, w2c)
 
+        # print(cam_points)
         cam_points = np.stack(cam_points, axis=0)
         mesh = volume.extract_triangle_mesh()
         mesh_points = np.array(mesh.vertices)
