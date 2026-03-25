@@ -26,7 +26,7 @@ class Tracker(object):
         self.output = sni.output
         self.verbose = sni.verbose
         self.renderer = sni.renderer
-        self.gt_c2w_list = sni.gt_c2w_list
+        # self.gt_c2w_list = sni.gt_c2w_list
         self.mapping_idx = sni.mapping_idx
         self.mapping_cnt = sni.mapping_cnt
         self.shared_decoders = sni.shared_decoders
@@ -261,7 +261,7 @@ class Tracker(object):
         for idx, gt_color, gt_depth, gt_c2w, gt_semantic in pbar:
             gt_color = gt_color.to(device, non_blocking=True)
             gt_depth = gt_depth.to(device, non_blocking=True)
-            gt_c2w = gt_c2w.to(device, non_blocking=True)
+            # gt_c2w = gt_c2w.to(device, non_blocking=True)
             gt_semantic = gt_semantic.to(device, non_blocking=True)
 
             if not self.verbose:
@@ -277,7 +277,7 @@ class Tracker(object):
             self.update_params_from_mapping()
 
             if idx == 0 or self.use_gt_pose:
-                c2w = gt_c2w
+                c2w = gt_c2w.to(device, non_blocking=True)
                 if not self.no_vis_on_first_frame:
                     self.visualizer.save_imgs(idx, 0, gt_depth, gt_color, c2w.squeeze(), all_planes, self.decoders)
 
@@ -312,6 +312,6 @@ class Tracker(object):
                 c2w = cam_pose_to_matrix(candidate_cam_pose)
 
             self.estimate_c2w_list[idx] = c2w.squeeze(0).clone()
-            self.gt_c2w_list[idx] = gt_c2w.squeeze(0).clone()
+            # self.gt_c2w_list[idx] = gt_c2w.squeeze(0).clone()
             pre_c2w = c2w.clone()
             self.idx[0] = idx

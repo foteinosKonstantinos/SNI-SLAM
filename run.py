@@ -22,10 +22,10 @@ def main():
     parser.add_argument("config", type=str, help='Path to config file.')
     parser.add_argument("--color-mesh", type=str, help="Path to the color mesh output (.ply)", default=MESH_COLOR)
     parser.add_argument("--semantic-mesh", type=str, help="Path to the semantic mesh output (.ply)", default=MESH_SEMANTIC)
-    # parser.add_argument('--input_folder', type=str,
-    #                     help='input folder, this have higher priority, can overwrite the one in config file')
-    # parser.add_argument('--output', type=str,
-    #                     help='output folder, this have higher priority, can overwrite the one in config file')
+    parser.add_argument('--input_folder', type=str,
+                        help='input folder, this have higher priority, can overwrite the one in config file')
+    parser.add_argument('--output', type=str,
+                        help='output folder, this have higher priority, can overwrite the one in config file')
     args = parser.parse_args()
 
     cfg = config.load_config(args.config, 'configs/SNI-SLAM.yaml')

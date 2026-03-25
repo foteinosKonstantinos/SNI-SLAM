@@ -269,13 +269,13 @@ class Mapper(object):
                 gt_depths.append(keyframe_dict[frame]['depth'].to(device))
                 gt_colors.append(keyframe_dict[frame]['color'].to(device))
                 c2ws.append(keyframe_dict[frame]['est_c2w'])
-                gt_c2ws.append(keyframe_dict[frame]['gt_c2w'])
+                # gt_c2ws.append(keyframe_dict[frame]['gt_c2w'])
 
             else:
                 gt_depths.append(cur_gt_depth)
                 gt_colors.append(cur_gt_color)
                 c2ws.append(cur_c2w)
-                gt_c2ws.append(gt_cur_c2w)
+                # gt_c2ws.append(gt_cur_c2w)
 
         gt_depths = torch.stack(gt_depths, dim=0)
         gt_colors = torch.stack(gt_colors, dim=0)
@@ -450,10 +450,11 @@ class Mapper(object):
 
             prev_idx = idx
 
-            _, gt_color, gt_depth, gt_c2w, gt_semantic = next(data_iterator)
+            # _, gt_color, gt_depth, gt_c2w, gt_semantic = next(data_iterator)
+            _, gt_color, gt_depth, _, gt_semantic = next(data_iterator)
             gt_color = gt_color.squeeze(0).to(self.device, non_blocking=True)
             gt_depth = gt_depth.squeeze(0).to(self.device, non_blocking=True)
-            gt_c2w = gt_c2w.squeeze(0).to(self.device, non_blocking=True)
+            # gt_c2w = gt_c2w.squeeze(0).to(self.device, non_blocking=True)
             gt_semantic = gt_semantic.squeeze(0).to(self.device)
 
             cur_c2w = self.estimate_c2w_list[idx]
@@ -480,7 +481,7 @@ class Mapper(object):
                     self.model_manager.set_mode_result()
                     gt_sem_label = self.model_manager.cnn(frame_rgb)
 
-            cur_c2w = self.optimize_mapping(iters, lr_factor, idx, gt_color, gt_depth, gt_c2w, sem_feat,
+            cur_c2w = self.optimize_mapping(iters, lr_factor, idx, gt_color, gt_depth, None, sem_feat, # gt_c2w
                                             gt_sem_label, gt_semantic,
                                             self.keyframe_dict, self.keyframe_list, cur_c2w)
 
@@ -492,7 +493,7 @@ class Mapper(object):
                 self.keyframe_list.append(idx)
 
                 frame_dict = {
-                    'gt_c2w': gt_c2w,
+                    # 'gt_c2w': gt_c2w,
                     'idx': idx,
                     'color': gt_color.to(self.keyframe_device),
                     'depth': gt_depth.to(self.keyframe_device),

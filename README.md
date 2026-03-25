@@ -2,6 +2,11 @@
 
 `python3 -W ignore run.py config.yaml`
 
+pickle classes: ```
+[ 0  3  7  8 10 11 12 13 14 15 16 17 18 19 20 22 23 26 29 31 34 35 37 40
+ 44 47 52 54 56 59 60 61 62 63 64 65 70 71 76 78 79 80 82 83 87 88 91 92
+ 93 95 97 98]```
+
 # SNI-SLAM: Semantic Neural Implicit SLAM
 Siting Zhu*, Guangming Wang*, Hermann Blum, Jiuming Liu, Liang Song, Marc Pollefeys, Hesheng Wang
 <div align="center">

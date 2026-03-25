@@ -120,16 +120,23 @@ class BaseDataset(Dataset):
             color_data = color_data[edge:-edge, edge:-edge]
             depth_data = depth_data[edge:-edge, edge:-edge]
             semantic_data = semantic_data[edge:-edge, edge:-edge]
-        pose = self.poses[index]
-        pose[:3, 3] *= self.scale
+        
+        try:
+            pose = self.poses[index]
+            pose[:3, 3] *= self.scale
+        except IndexError:
+            # pose = None
+            pose = 0
 
         return index, color_data, depth_data, pose, semantic_data
+        # return index, color_data, depth_data, None, semantic_data
 
 class Replica(BaseDataset):
     semantic_classes = None
     num_semantic_class = None
-    def __init__(self, cfg, args, scale, device='cuda:0'
+    def __init__(self, cfg, args, scale, device='cuda:0', no_pose=True
                  ):
+        print("WARNING: REPLICA DATASET: DISABLED POSE LOADING")
         super(Replica, self).__init__(cfg, args, scale, device)
         self.color_paths = sorted(
             glob.glob(f'{self.input_folder}/rgb/rgb_*.png'), key=self.sort_key)
@@ -139,6 +146,7 @@ class Replica(BaseDataset):
             glob.glob(f'{self.input_folder}/semantic_class/semantic_class_*.png'), key=self.sort_key)
 
         self.n_img = len(self.color_paths)
+        # if not no_pose:
         self.load_poses(f'{self.input_folder}/traj.txt')
 
         self.path = cfg['model']['path']
@@ -152,24 +160,24 @@ class Replica(BaseDataset):
             self.num_semantic_class = Replica.num_semantic_class
 
 
-    def calculate_semantic_classes(self):
-        self.semantic_classes = set()
-        for file in tqdm(self.semantic_paths, desc="Reading images"):
-            img = cv2.imread(file, cv2.IMREAD_UNCHANGED)
-            unique_labels = np.unique(img)
-            self.semantic_classes.update(unique_labels)
+    # def calculate_semantic_classes(self):
+    #     self.semantic_classes = set()
+    #     for file in tqdm(self.semantic_paths, desc="Reading images"):
+    #         img = cv2.imread(file, cv2.IMREAD_UNCHANGED)
+    #         unique_labels = np.unique(img)
+    #         self.semantic_classes.update(unique_labels)
 
-        self.semantic_classes = np.array(list(self.semantic_classes)).astype(np.uint8)
-        self.num_semantic_class = self.semantic_classes.shape[0]
+    #     self.semantic_classes = np.array(list(self.semantic_classes)).astype(np.uint8)
+    #     self.num_semantic_class = self.semantic_classes.shape[0]
 
-        with open(f'{self.path}/semantic_classes.pkl', 'wb') as f:
-            pickle.dump(self.semantic_classes, f)
-        with open(f'{self.path}/num_semantic_class.pkl', 'wb') as f:
-            pickle.dump(self.num_semantic_class, f)
+    #     with open(f'{self.path}/semantic_classes.pkl', 'wb') as f:
+    #         pickle.dump(self.semantic_classes, f)
+    #     with open(f'{self.path}/num_semantic_class.pkl', 'wb') as f:
+    #         pickle.dump(self.num_semantic_class, f)
 
-        # Save to the class variables
-        Replica.semantic_classes = self.semantic_classes
-        Replica.num_semantic_class = self.num_semantic_class
+    #     # Save to the class variables
+    #     Replica.semantic_classes = self.semantic_classes
+    #     Replica.num_semantic_class = self.num_semantic_class
 
     def load_semantic_classes(self):
         # print(f'{self.path}/semantic_classes.pkl')
@@ -188,15 +196,17 @@ class Replica(BaseDataset):
 
     def load_poses(self, path):
         self.poses = []
-        with open(path, "r") as f:
-            lines = f.readlines()
-        for i in range(self.n_img):
-            line = lines[i]
-            c2w = np.array(list(map(float, line.split()))).reshape(4, 4)
-            c2w[:3, 1] *= -1
-            c2w[:3, 2] *= -1
-            c2w = torch.from_numpy(c2w).float()
-            self.poses.append(c2w)
+        # with open(path, "r") as f:
+        #     lines = f.readlines()
+        # for i in range(self.n_img):
+        
+        # line = lines[i]
+        line = "-1.101925653095542218e-01 -2.638692763987721679e-01 -9.582434990769768124e-01 -2.235586422231815362e+00 9.939102567890621964e-01 -2.925458538549653015e-02 -1.062382731571963473e-01 -4.639382427970721312e-01 1.180699993719285590e-16 -9.641147100872962117e-01 2.654860180749429310e-01 1.868053417016146134e-01 0.000000000000000000e+00 0.000000000000000000e+00 0.000000000000000000e+00 1.000000000000000000e+00"
+        c2w = np.array(list(map(float, line.split()))).reshape(4, 4)
+        c2w[:3, 1] *= -1
+        c2w[:3, 2] *= -1
+        c2w = torch.from_numpy(c2w).float()
+        self.poses.append(c2w)
 
 
 class ScanNet(BaseDataset):

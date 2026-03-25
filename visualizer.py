@@ -50,6 +50,7 @@ if __name__ == '__main__':
 
             ## Setting view point ##
             meshfile = sorted(glob.glob(f'{output}/mesh/*.ply'))[-1]
+            # meshfile = "/home/fotkon/VSLAM/SNI-SLAM/output/Replica/dokimi/test/mesh/final_mesh_color_culled.ply"
             if os.path.isfile(meshfile):
                 if args.top_view:
                     # get the latest .ply file in the "mesh" folder and use it to set the view point
@@ -65,7 +66,7 @@ if __name__ == '__main__':
                                         estimate_c2w_list=estimate_c2w_list, gt_c2w_list=gt_c2w_list)
                 frontend.start()
 
-                ## Visualize the trajectory ##
+                # Visualize the trajectory ##
                 for i in tqdm(range(0, N+1)):
                     meshfile = f'{output}/mesh/{i:05d}_mesh_sem.ply'
                     if os.path.isfile(meshfile):
@@ -77,7 +78,7 @@ if __name__ == '__main__':
                         frontend.update_cam_trajectory(i, gt=False)
                         if not args.no_gt_traj:
                             frontend.update_cam_trajectory(i, gt=True)
-                    time.sleep(wait_time)
+                time.sleep(wait_time)
 
                 frontend.terminate()
                 time.sleep(1)

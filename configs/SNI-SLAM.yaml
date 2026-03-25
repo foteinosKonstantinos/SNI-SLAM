@@ -17,7 +17,8 @@ s_planes_res:
 
 meshing:
   level_set: 0
-  resolution: 0.01
+  # resolution: 0.01
+  resolution: 0.1
   eval_rec: False
   mesh_bound_scale: 1.02
 tracking:
@@ -47,7 +48,8 @@ mapping:
   no_log_on_first_frame: True
   vis_freq: 360
   vis_inside_freq: 400
-  mesh_freq: 40
+  # mesh_freq: 40
+  mesh_freq: 500
   ckpt_freq: 500
   keyframe_every: 4
   mapping_window_size: 5
