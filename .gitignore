@@ -2,3 +2,6 @@ data/
 output/
 *pkl
 seg/dinov2_replica.pth
+recon
+tornado
+tornado_subset

@@ -136,7 +136,7 @@ class Replica(BaseDataset):
     num_semantic_class = None
     def __init__(self, cfg, args, scale, device='cuda:0', no_pose=True
                  ):
-        print("WARNING: REPLICA DATASET: DISABLED POSE LOADING")
+        print("WARNING: REPLICA DATASET: DISABLED POSE LOADING, MODIFIED!!")
         super(Replica, self).__init__(cfg, args, scale, device)
         self.color_paths = sorted(
             glob.glob(f'{self.input_folder}/rgb/rgb_*.png'), key=self.sort_key)
@@ -147,7 +147,8 @@ class Replica(BaseDataset):
 
         self.n_img = len(self.color_paths)
         # if not no_pose:
-        self.load_poses(f'{self.input_folder}/traj.txt')
+        # self.load_poses(f'{self.input_folder}/traj.txt')
+        self.load_poses("")
 
         self.path = cfg['model']['path']
 
@@ -181,10 +182,15 @@ class Replica(BaseDataset):
 
     def load_semantic_classes(self):
         # print(f'{self.path}/semantic_classes.pkl')
+        print("WARNING: W/O SEMANTICS!!!")
         with open(f'{self.path}/semantic_classes.pkl', 'rb') as f:
             self.semantic_classes = pickle.load(f)
         with open(f'{self.path}/num_semantic_class.pkl', 'rb') as f:
             self.num_semantic_class = pickle.load(f)
+        # print("WARNING: NO REPLICA CLASSES BUT COCO !!!, LINE 190 datasets.py")
+        # assert False
+        # self.num_semantic_class = 80
+        # self.semantic_classes = np.arange(start=0, stop=self.num_semantic_class)
 
     def sort_key(self, filepath):
         base_name = os.path.basename(filepath)

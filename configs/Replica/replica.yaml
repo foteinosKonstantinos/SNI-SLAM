@@ -1,6 +1,7 @@
 dataset: 'replica'
 meshing:
-  resolution: 0.01
+  # resolution: 0.01
+  resolution: 0.1
   eval_rec: True
 tracking:
   ignore_edge_W: 75
@@ -17,12 +18,18 @@ mapping:
   lr:
     fusion_lr: 3e-3
 cam:
-  H: 680
-  W: 1200
-  fx: 600.0
-  fy: 600.0
-  cx: 599.5
-  cy: 339.5
+  # H: 680
+  # W: 1200
+  # fx: 600.0
+  # fy: 600.0
+  # cx: 599.5
+  # cy: 339.5
+  H: 480
+  W: 640
+  fx: 606.383605957031
+  fy: 605.308898925781
+  cx: 319.168640136719
+  cy: 231.037185668945
   png_depth_scale: 1000.0
   crop_edge: 0
 rendering:

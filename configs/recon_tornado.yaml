@@ -1,0 +1,7 @@
+inherit_from: configs/Replica/replica.yaml
+mapping:
+  bound: [[-20.0,20.0],[-20.0,20.0],[-20.0,20.0]]
+  marching_cubes_bound: [[-20.0,20.0],[-20.0,20.0],[-20.0,20.0]]
+data:
+  input_folder: data/tornado
+  output: output/tornado
