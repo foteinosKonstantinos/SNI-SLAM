@@ -12,6 +12,7 @@ from src.utils.datasets import get_dataset, SeqSampler
 from src.utils.Frame_Visualizer import Frame_Visualizer
 from src.tools.cull_mesh import cull_mesh
 import wandb
+# from src.SNI_SLAM import SNI_SLAM
 
 class Mapper(object):
     """
@@ -26,6 +27,8 @@ class Mapper(object):
 
         self.cfg = cfg
         self.args = args
+
+        self.sni = sni
 
         self.idx = sni.idx
         self.truncation = sni.truncation
@@ -513,21 +516,49 @@ class Mapper(object):
             self.mapping_idx[0] = idx
             self.mapping_cnt[0] += 1
 
-            if (idx % self.mesh_freq == 0) and (not (idx == 0 and self.no_mesh_on_first_frame)):
-                # mesh_out_file = f'{self.output}/mesh/{idx:05d}_mesh_sem.ply'
-                # self.mesher.get_mesh(mesh_out_file, all_planes, self.decoders, self.keyframe_dict, self.device)
-                # cull_mesh(mesh_out_file, self.cfg, self.args, self.device, estimate_c2w_list=self.estimate_c2w_list[:idx+1])
-                mesh_out_semantic = f'{self.output}/mesh/{idx:05d}_mesh_sem.ply'
-                mesh_out_color = f'{self.output}/mesh/{idx:05d}_mesh_rgb.ply'
-                self.mesher.get_mesh(mesh_out_color, all_planes, self.decoders, self.keyframe_dict, self.device, mesh_out_semantic=mesh_out_semantic, color=False)
+            # if (idx % self.mesh_freq == 0) and (not (idx == 0 and self.no_mesh_on_first_frame)):
+            #     # mesh_out_file = f'{self.output}/mesh/{idx:05d}_mesh_sem.ply'
+            #     # self.mesher.get_mesh(mesh_out_file, all_planes, self.decoders, self.keyframe_dict, self.device)
+            #     # cull_mesh(mesh_out_file, self.cfg, self.args, self.device, estimate_c2w_list=self.estimate_c2w_list[:idx+1])
+            #     mesh_out_semantic = f'{self.output}/mesh/{idx:05d}_mesh_sem.ply'
+            #     mesh_out_color = f'{self.output}/mesh/{idx:05d}_mesh_rgb.ply'
+            #     self.mesher.get_mesh(mesh_out_color, all_planes, self.decoders, self.keyframe_dict, self.device, mesh_out_semantic=mesh_out_semantic, color=False)
+
+            # if idx == self.n_img-1:
+            #     mesh_out_semantic = f'{self.output}/mesh/final_mesh_semantic.ply'
+            #     mesh_out_color = f'{self.output}/mesh/final_mesh_color.ply'
+            #     self.mesher.get_mesh(mesh_out_color, all_planes, self.decoders, self.keyframe_dict, self.device, mesh_out_semantic=mesh_out_semantic, semantic=False)
+            #     cull_mesh(mesh_out_color, self.cfg, self.args, self.device, estimate_c2w_list=self.estimate_c2w_list)
+
+            #     break
+
 
             if idx == self.n_img-1:
-                mesh_out_semantic = f'{self.output}/mesh/final_mesh_semantic.ply'
-                mesh_out_color = f'{self.output}/mesh/final_mesh_color.ply'
-                self.mesher.get_mesh(mesh_out_color, all_planes, self.decoders, self.keyframe_dict, self.device, mesh_out_semantic=mesh_out_semantic, semantic=False)
-                cull_mesh(mesh_out_color, self.cfg, self.args, self.device, estimate_c2w_list=self.estimate_c2w_list)
-
+                import datetime
+                import pickle
+                with open(f"{datetime.datetime.now()}_sni_slam.pkl", "wb") as out_file:
+                    pickle.dump(obj=self.sni, file=out_file)
+                print("Saved pkl")
+                sem_mesh = f'{self.output}/mesh/final_mesh_sem.ply'
+                color_mesh = f'{self.output}/mesh/final_mesh_rgb.ply'
+                print("Creating color mesh ...")
+                self.sni.mesher.get_mesh(color_mesh, all_planes, self.sni.mapper.decoders, self.sni.mapper.keyframe_dict, self.sni.device, mesh_out_semantic=sem_mesh, color=True, semantic=False)
+                cull_mesh(color_mesh, self.sni.cfg, self.sni.args, self.sni.device, estimate_c2w_list=self.sni.estimate_c2w_list)
+                print("Creating semantic mesh ...")
+                self.sni.mesher.get_mesh(sem_mesh, all_planes, self.sni.mapper.decoders, self.sni.mapper.keyframe_dict, self.sni.device, mesh_out_semantic=sem_mesh, semantic=True, color=False)
+                cull_mesh(sem_mesh, self.sni.cfg, self.sni.args, self.sni.device, estimate_c2w_list=self.sni.estimate_c2w_list)            
                 break
 
-            if idx == self.n_img-1:
-                break
+from src.tools.cull_mesh import cull_mesh
+
+# def construct_mesh(sni_slam:SNI_SLAM, color_mesh:str, sem_mesh:str):
+#     all_planes = (
+#             sni_slam.shared_planes_xy, sni_slam.shared_planes_xz, sni_slam.shared_planes_yz,
+#             sni_slam.shared_c_planes_xy, sni_slam.shared_c_planes_xz, sni_slam.shared_c_planes_yz,
+#             sni_slam.shared_s_planes_xy, sni_slam.shared_s_planes_xz, sni_slam.shared_s_planes_yz)
+#     print("Creating color mesh ...")
+#     sni_slam.mesher.get_mesh(color_mesh, all_planes, sni_slam.mapper.decoders, sni_slam.mapper.keyframe_dict, sni_slam.device, mesh_out_semantic=sem_mesh, color=True, semantic=False)
+#     cull_mesh(color_mesh, sni_slam.cfg, sni_slam.args, sni_slam.device, estimate_c2w_list=sni_slam.estimate_c2w_list)
+#     print("Creating semantic mesh ...")
+#     sni_slam.mesher.get_mesh(sem_mesh, all_planes, sni_slam.mapper.decoders, sni_slam.mapper.keyframe_dict, sni_slam.device, mesh_out_semantic=sem_mesh, semantic=True, color=False)
+#     cull_mesh(sem_mesh, sni_slam.cfg, sni_slam.args, sni_slam.device, estimate_c2w_list=sni_slam.estimate_c2w_list)

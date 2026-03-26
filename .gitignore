@@ -1,3 +1,4 @@
 data/
 output/
+*pkl
 seg/dinov2_replica.pth

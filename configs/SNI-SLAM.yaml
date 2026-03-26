@@ -46,7 +46,7 @@ mapping:
   no_vis_on_first_frame: True
   no_mesh_on_first_frame: True
   no_log_on_first_frame: True
-  vis_freq: 360
+  vis_freq: 10
   vis_inside_freq: 400
   # mesh_freq: 40
   mesh_freq: 500

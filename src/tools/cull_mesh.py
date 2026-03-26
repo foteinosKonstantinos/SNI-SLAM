@@ -47,7 +47,7 @@ def cull_mesh(mesh_file, cfg, args, device, estimate_c2w_list=None):
 
     """
     frame_reader = get_dataset(cfg, args, 1, device=device)
-
+    assert estimate_c2w_list is not None
     eval_rec = cfg['meshing']['eval_rec']
     truncation = cfg['model']['truncation']
     H, W, fx, fy, cx, cy = cfg['cam']['H'], cfg['cam']['W'], cfg['cam']['fx'], cfg['cam']['fy'], cfg['cam']['cx'], cfg['cam']['cy']
@@ -63,8 +63,8 @@ def cull_mesh(mesh_file, cfg, args, device, estimate_c2w_list=None):
     whole_mask = np.ones(pc.shape[0]).astype('bool')
     for i in tqdm(range(0, n_imgs, 1)):
         _, _, depth, c2w, _ = frame_reader[i]
-        depth, c2w = depth.to(device), c2w.to(device)
-
+        #depth, c2w = depth.to(device), c2w.to(device)
+        depth = depth.to(device)
         if not estimate_c2w_list is None:
             c2w = estimate_c2w_list[i].to(device)
 

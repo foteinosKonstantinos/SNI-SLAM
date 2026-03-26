@@ -273,7 +273,7 @@ class SNI_SLAM():
             processes.append(p)
         for p in processes:
             p.join()
-        print("warning: mesh is not generated automatically")
+        # print("warning: mesh is not generated automatically")
         # self.mesher.get_mesh()
 
 # This part is required by torch.multiprocessing
