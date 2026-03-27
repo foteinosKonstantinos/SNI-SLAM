@@ -182,15 +182,17 @@ class Replica(BaseDataset):
 
     def load_semantic_classes(self):
         # print(f'{self.path}/semantic_classes.pkl')
-        print("WARNING: W/O SEMANTICS!!!")
-        with open(f'{self.path}/semantic_classes.pkl', 'rb') as f:
-            self.semantic_classes = pickle.load(f)
-        with open(f'{self.path}/num_semantic_class.pkl', 'rb') as f:
-            self.num_semantic_class = pickle.load(f)
+        # print("WARNING: W/O SEMANTICS!!!")
+        # with open(f'{self.path}/semantic_classes.pkl', 'rb') as f:
+        #     self.semantic_classes = pickle.load(f)
+        # with open(f'{self.path}/num_semantic_class.pkl', 'rb') as f:
+        #     self.num_semantic_class = pickle.load(f)
         # print("WARNING: NO REPLICA CLASSES BUT COCO !!!, LINE 190 datasets.py")
         # assert False
         # self.num_semantic_class = 80
         # self.semantic_classes = np.arange(start=0, stop=self.num_semantic_class)
+        self.semantic_classes = [0, 10, 20, 30, 40, 50, 60, 70, 80]
+        self.num_semantic_class = len(self.semantic_classes)
 
     def sort_key(self, filepath):
         base_name = os.path.basename(filepath)
@@ -207,8 +209,14 @@ class Replica(BaseDataset):
         # for i in range(self.n_img):
         
         # line = lines[i]
-        line = "-1.101925653095542218e-01 -2.638692763987721679e-01 -9.582434990769768124e-01 -2.235586422231815362e+00 9.939102567890621964e-01 -2.925458538549653015e-02 -1.062382731571963473e-01 -4.639382427970721312e-01 1.180699993719285590e-16 -9.641147100872962117e-01 2.654860180749429310e-01 1.868053417016146134e-01 0.000000000000000000e+00 0.000000000000000000e+00 0.000000000000000000e+00 1.000000000000000000e+00"
-        c2w = np.array(list(map(float, line.split()))).reshape(4, 4)
+        # line = "-1.101925653095542218e-01 -2.638692763987721679e-01 -9.582434990769768124e-01 -2.235586422231815362e+00 9.939102567890621964e-01 -2.925458538549653015e-02 -1.062382731571963473e-01 -4.639382427970721312e-01 1.180699993719285590e-16 -9.641147100872962117e-01 2.654860180749429310e-01 1.868053417016146134e-01 0.000000000000000000e+00 0.000000000000000000e+00 0.000000000000000000e+00 1.000000000000000000e+00"
+        # c2w = np.array(list(map(float, line.split()))).reshape(4, 4)
+        c2w = np.asarray([
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ])
         c2w[:3, 1] *= -1
         c2w[:3, 2] *= -1
         c2w = torch.from_numpy(c2w).float()

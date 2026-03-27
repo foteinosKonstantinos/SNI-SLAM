@@ -50,7 +50,7 @@ class Mapper(object):
         self.c_planes_xz = sni.shared_c_planes_xz
         self.c_planes_yz = sni.shared_c_planes_yz
 
-        self.use_gt_semantic = cfg['func']['use_gt_semantic']
+        self.use_gt_semantic = True # = cfg['func']['use_gt_semantic']
 
         self.s_planes_xy = sni.shared_s_planes_xy
         self.s_planes_xz = sni.shared_s_planes_xz
@@ -71,7 +71,8 @@ class Mapper(object):
         self.feature_device = cfg['feature_device']
 
         self.eval_rec = cfg['meshing']['eval_rec']
-        self.joint_opt = False  # Even if joint_opt is enabled, it starts only when there are at least 4 keyframes
+        # self.joint_opt = False  # Even if joint_opt is enabled, it starts only when there are at least 4 keyframes
+        self.joint_opt = True
         self.joint_opt_cam_lr = cfg['mapping']['joint_opt_cam_lr'] # The learning rate for camera poses during mapping
         self.mesh_freq = cfg['mapping']['mesh_freq']
         self.ckpt_freq = cfg['mapping']['ckpt_freq']
@@ -375,6 +376,7 @@ class Mapper(object):
             feature_loss = self.w_feature * (gt_feature - plane_feature).abs().mean()
             loss = loss + feature_loss
 
+            ### Semantic loss
             CrossEntropyLoss = nn.CrossEntropyLoss(ignore_index=-1)
             semantic_loss = self.w_semantic * CrossEntropyLoss(render_semantic, batch_gt_label)
             loss = loss + semantic_loss
@@ -382,6 +384,8 @@ class Mapper(object):
             optimizer.zero_grad()
             loss.backward(retain_graph=False)
             optimizer.step()
+
+            # print(f"Losses: Color = {color_loss/self.w_color:.4f} Depth = {depth_loss/self.w_depth:.4f} Semantic = {semantic_loss/self.w_semantic:.4f}")
 
             if self.verbose:
                 end_time = time.time()
@@ -481,6 +485,7 @@ class Mapper(object):
                     gt_sem_label = gt_semantic
 
                 else:
+                    raise Exception("Mapper 487")
                     self.model_manager.set_mode_result()
                     gt_sem_label = self.model_manager.cnn(frame_rgb)
 
@@ -535,10 +540,10 @@ class Mapper(object):
 
             if idx == self.n_img-1:
                 import datetime
-                import pickle
-                with open(f"{datetime.datetime.now()}_sni_slam.pkl", "wb") as out_file:
-                    pickle.dump(obj=self.sni, file=out_file)
-                print("Saved pkl")
+                # import pickle
+                # with open(f"{datetime.datetime.now()}_sni_slam.pkl", "wb") as out_file:
+                #     pickle.dump(obj=self.sni, file=out_file)
+                # print("Saved pkl")
                 sem_mesh = f'{self.output}/mesh/final_mesh_sem.ply'
                 color_mesh = f'{self.output}/mesh/final_mesh_rgb.ply'
                 print("Creating color mesh ...")

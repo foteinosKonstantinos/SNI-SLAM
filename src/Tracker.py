@@ -140,7 +140,7 @@ class Tracker(object):
 
         return sdf_losses
 
-    def optimize_tracking(self, cam_pose, gt_color, gt_depth, batch_size, optimizer, gt_semantic=None):
+    def optimize_tracking(self, cam_pose, gt_color, gt_depth, batch_size, optimizer, gt_semantic):
         """
         Do one iteration of camera tracking. Sample pixels, render depth/color, calculate loss and backpropagation.
 

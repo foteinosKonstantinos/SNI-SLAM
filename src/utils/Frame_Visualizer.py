@@ -66,7 +66,8 @@ class Frame_Visualizer(object):
             decoders (torch.nn.Module): decoders for TSDF and color.
         """
         with torch.no_grad():
-            if (idx % self.freq == 0) and (iter % self.inside_freq == 0):
+            if (idx % self.freq == 0): #and (iter % self.inside_freq == 0):
+            # if True:
                 gt_depth_np = gt_depth.squeeze(0).cpu().numpy()
                 gt_color_np = gt_color.squeeze(0).cpu().numpy()
 

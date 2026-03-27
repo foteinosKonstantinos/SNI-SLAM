@@ -39,7 +39,8 @@ class ModelManager:
         return head(in_dim=self.dim, hidden_dim=self.hidden_dim)
 
     def get_dinov2(self):
-        model = DINO2SEG(img_h=self.img_h, img_w=self.img_w, num_cls=self.n_classes, edge=self.crop_edge, dim=self.dim)
+        # model = DINO2SEG(img_h=self.img_h, img_w=self.img_w, num_cls=self.n_classes, edge=self.crop_edge, dim=self.dim)
+        model = DINO2SEG(img_h=self.img_h, img_w=self.img_w, num_cls=52, edge=self.crop_edge, dim=self.dim)
         model.load_state_dict(torch.load(self.pretrained_model_path, map_location=self.device))
         return model
 

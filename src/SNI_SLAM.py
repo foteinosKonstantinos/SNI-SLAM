@@ -114,7 +114,7 @@ class SNI_SLAM():
         self.logger = Logger(self)
         self.mapper = Mapper(cfg, args, self)
         self.tracker = Tracker(cfg, args, self)
-        # self.print_output_desc()
+        self.print_output_desc()
 
     def print_output_desc(self):
         print(f"INFO: The output folder is {self.output}")
