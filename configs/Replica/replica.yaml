@@ -1,20 +1,24 @@
 dataset: 'replica'
 meshing:
-  # resolution: 0.01
-  resolution: 0.1
+  # resolution: 0.1
+  resolution: 0.08
   eval_rec: True
 tracking:
   ignore_edge_W: 75
   ignore_edge_H: 75
   lr_T: 0.002
   lr_R: 0.001
-  pixels: 2000
-  iters: 8
-mapping:
+  # pixels: 2000
   pixels: 4000
-  iters: 15
-  vis_freq: 90
-  every_frame: 1
+  # iters: 8
+  iters: 16
+mapping:
+  # pixels: 4000
+  pixels: 8000
+  # iters: 15
+  iters: 30
+  vis_freq: 49
+  every_frame: 5
   lr:
     fusion_lr: 3e-3
 cam:

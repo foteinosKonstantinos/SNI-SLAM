@@ -48,11 +48,11 @@ class SeqSampler(Sampler):
     def __len__(self) -> int:
         return self.n_samples
 
-def get_dataset(cfg, args, scale, device='cuda:0'):
+def get_dataset(cfg, args, scale, device='cuda'):
     return dataset_dict[cfg['dataset']](cfg, args, scale, device=device)
 
 class BaseDataset(Dataset):
-    def __init__(self, cfg, args, scale, device='cuda:0'):
+    def __init__(self, cfg, args, scale, device='cuda'):
         super(BaseDataset, self).__init__()
         self.name = cfg['dataset']
         self.device = device
@@ -134,7 +134,7 @@ class BaseDataset(Dataset):
 class Replica(BaseDataset):
     semantic_classes = None
     num_semantic_class = None
-    def __init__(self, cfg, args, scale, device='cuda:0', no_pose=True
+    def __init__(self, cfg, args, scale, device='cuda', no_pose=True
                  ):
         print("WARNING: REPLICA DATASET: DISABLED POSE LOADING, MODIFIED!!")
         super(Replica, self).__init__(cfg, args, scale, device)
@@ -224,7 +224,7 @@ class Replica(BaseDataset):
 
 
 class ScanNet(BaseDataset):
-    def __init__(self, cfg, args, scale, device='cuda:0'
+    def __init__(self, cfg, args, scale, device='cuda'
                  ):
         super(ScanNet, self).__init__(cfg, args, scale, device)
         # self.input_folder = os.path.join(self.input_folder, 'frames')
@@ -255,7 +255,7 @@ class ScanNet(BaseDataset):
             self.poses.append(c2w)
 
 class TUM_RGBD(BaseDataset):
-    def __init__(self, cfg, args, scale, device='cuda:0'
+    def __init__(self, cfg, args, scale, device='cuda'
                  ):
         super(TUM_RGBD, self).__init__(cfg, args, scale, device)
         self.color_paths, self.semantic_paths, self.depth_paths, self.poses = self.loadtum(

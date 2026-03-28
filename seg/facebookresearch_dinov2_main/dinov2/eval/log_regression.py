@@ -81,7 +81,7 @@ def get_args_parser(
     parser.add_argument(
         "--train-features-device",
         type=str,
-        help="Device to gather train features (cpu, cuda, cuda:0, etc.), default: %(default)s",
+        help="Device to gather train features (cpu, cuda, cuda, etc.), default: %(default)s",
     )
     parser.add_argument(
         "--train-dtype",

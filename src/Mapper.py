@@ -71,8 +71,8 @@ class Mapper(object):
         self.feature_device = cfg['feature_device']
 
         self.eval_rec = cfg['meshing']['eval_rec']
-        # self.joint_opt = False  # Even if joint_opt is enabled, it starts only when there are at least 4 keyframes
-        self.joint_opt = True
+        self.joint_opt = False  # Even if joint_opt is enabled, it starts only when there are at least 4 keyframes
+        # self.joint_opt = True
         self.joint_opt_cam_lr = cfg['mapping']['joint_opt_cam_lr'] # The learning rate for camera poses during mapping
         self.mesh_freq = cfg['mapping']['mesh_freq']
         self.ckpt_freq = cfg['mapping']['ckpt_freq']

@@ -38,7 +38,7 @@ class Frame_Visualizer(object):
         device (str): device.
     """
 
-    def __init__(self, freq, inside_freq, vis_dir, renderer, truncation, verbose, device='cuda:0', n_classes=25):
+    def __init__(self, freq, inside_freq, vis_dir, renderer, truncation, verbose, device='cuda', n_classes=25):
         self.freq = freq
         self.device = device
         self.vis_dir = vis_dir

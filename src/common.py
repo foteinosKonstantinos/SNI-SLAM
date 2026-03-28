@@ -37,7 +37,7 @@ def as_intrinsics_matrix(intrinsics):
     return K
 
 
-def sample_pdf(bins, weights, N_samples, det=False, device='cuda:0'):
+def sample_pdf(bins, weights, N_samples, det=False, device='cuda'):
     """
     Hierarchical sampling in NeRF paper.
     """
@@ -97,7 +97,7 @@ def get_rays_from_uv(i, j, c2ws, H, W, fx, fy, cx, cy, device):
 
     return rays_o, rays_d
 
-def get_sample_uv(H0, H1, W0, W1, n, b, depths, colors, sem_feats=None, rgb_feats=None, gt_label=None, device='cuda:0'):
+def get_sample_uv(H0, H1, W0, W1, n, b, depths, colors, sem_feats=None, rgb_feats=None, gt_label=None, device='cuda'):
     """
     Sample n uv coordinates from an image region H0..H1, W0..W1
 
@@ -147,7 +147,7 @@ def get_sample_uv(H0, H1, W0, W1, n, b, depths, colors, sem_feats=None, rgb_feat
     return i, j, depth, color, sampled_sem_feats, sampled_rgb_feats, sampled_gt_label
 
 def get_samples(H0, H1, W0, W1, n, H, W, fx, fy, cx, cy, c2ws, depths, colors,
-                sem_feats=None, rgb_feats=None, gt_label=None, device='cuda:0', dim=16):
+                sem_feats=None, rgb_feats=None, gt_label=None, device='cuda', dim=16):
     """
     Get n rays from the image region H0..H1, W0..W1.
     c2w is its camera pose and depth/color is the corresponding image tensor.

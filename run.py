@@ -6,6 +6,9 @@ from src.SNI_SLAM import SNI_SLAM
 MESH_SEMANTIC = f'mesh_sem.ply'
 MESH_COLOR = f'mesh_rgb.ply'
 
+import warnings
+warnings.filterwarnings('ignore')
+
 
 def main():
     parser = argparse.ArgumentParser(

@@ -80,19 +80,18 @@ prompt = ["door","basket","box","floor","human","forklift","rack","wood","pallet
 model = Grounded_SAM("grounding-dino-tiny","sam2.1_l","cuda")
 
 def produce(src, dst, model, prompt, save_vis=False):
-    result = model.predict_single_image(src,prompt)
-    if result is None:
-       return
-    if save_vis:
-        result.save(dst+" visualization.png")
     masks = np.zeros((cv2.imread(src).shape[0],cv2.imread(src).shape[1]))
-    for idx in result.names.keys():
-        pname = result.names[idx].split(" ")[0]
-        try:
-            mask = np.asarray(result.masks.data[idx].detach().cpu()).astype(int) * names_to_idxs[pname]
-        except KeyError:
-            continue
-        masks = masks + mask * (masks == 0).astype(int) # ignore overlapped instances
+    result = model.predict_single_image(src,prompt)
+    if result is not None:    
+      if save_vis:
+          result.save(dst+" visualization.png")
+      for idx in result.names.keys():
+          pname = result.names[idx].split(" ")[0]
+          try:
+              mask = np.asarray(result.masks.data[idx].detach().cpu()).astype(int) * names_to_idxs[pname]
+          except KeyError:
+              continue
+          masks = masks + mask * (masks == 0).astype(int) # ignore overlapped instances
     cv2.imwrite(dst, masks)
     print(f"Success: {dst}")
 

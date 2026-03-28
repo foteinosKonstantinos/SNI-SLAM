@@ -1,35 +1,35 @@
 scale: 1
 verbose: False
-device: "cuda:0"
+device: "cuda"
 keyframe_device: "cpu" # Change this to "cpu" to reduce GPU memory usage
 feature_device: "cpu"
 
-# planes_res:
-#   coarse: 0.24
-#   fine: 0.06
-#   bound_dividable: 0.24
-# c_planes_res:
-#   coarse: 0.24
-#   fine: 0.03
-# s_planes_res:
-#   coarse: 0.24
-#   fine: 0.03
-
 planes_res:
-  coarse: 0.1
-  fine: 0.01
-  bound_dividable: 0.1
+  coarse: 0.24
+  fine: 0.06
+  bound_dividable: 0.24
 c_planes_res:
-  coarse: 0.1
-  fine: 0.01
+  coarse: 0.24
+  fine: 0.03
 s_planes_res:
-  coarse: 0.1
-  fine: 0.01
+  coarse: 0.24
+  fine: 0.03
+
+# planes_res:
+#   coarse: 0.1
+#   fine: 0.01
+#   bound_dividable: 0.1
+# c_planes_res:
+#   coarse: 0.1
+#   fine: 0.01
+# s_planes_res:
+#   coarse: 0.1
+#   fine: 0.01
 
 meshing:
   level_set: 0
-  # resolution: 0.001
   resolution: 0.1
+  # resolution: 0.01
   eval_rec: False
   mesh_bound_scale: 1.02
 tracking:
@@ -41,10 +41,9 @@ tracking:
   no_vis_on_first_frame: True
   lr_T: 0.001
   lr_R: 0.001
-  # pixels: 2000
-  pixels: 10000
-  # iters: 8
-  iters: 30
+  pixels: 2000
+  # pixels: 10000
+  iters: 8
   w_sdf_fs: 10
   w_sdf_center: 200
   w_sdf_tail: 50
@@ -69,11 +68,11 @@ mapping:
   keyframe_selection_method: 'overlap'
   lr_first_factor: 5
   lr_factor: 1
-  # pixels: 4000
-  pixels: 100000
-  iters_first: 2000
-  # iters: 15
-  iters: 200
+  pixels: 4000
+  # pixels: 40000
+  iters_first: 1000
+  iters: 15
+  # iters: 50
   w_sdf_fs: 5
   w_sdf_center: 200
   w_sdf_tail: 10
@@ -120,6 +119,6 @@ model:
   path: '/home/kfoteinos/VSLAM/SNI-SLAM/seg'
 
 func:
-  use_gt_semantic: False
+  use_gt_semantic: True
   use_gt_pose: False
   enable_wandb: False

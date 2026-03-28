@@ -187,7 +187,7 @@ class Mesher(object):
 
         return {"grid_points": grid_points_t, "xyz": [x, y, z]}
 
-    def get_mesh(self, mesh_out_color, all_planes, decoders, keyframe_dict, device='cuda:0', mesh_out_semantic=None, color=True, semantic=True):
+    def get_mesh(self, mesh_out_color, all_planes, decoders, keyframe_dict, device='cuda', mesh_out_semantic=None, color=True, semantic=True):
         """
         Get mesh from keyframes and feature planes and save to file.
         Args:

@@ -1,7 +1,7 @@
 inherit_from: configs/Replica/replica.yaml
 mapping:
-  bound: [[-3.0,3.0],[-3.0,3.0],[-3.0,3.0]]
-  marching_cubes_bound: [[-3.0,3.0],[-3.0,3.0],[-3.0,3.0]]
+  bound: [[-5.0,5.0],[-5.0,5.0],[-2.0,2.0]]
+  marching_cubes_bound: [[-5.0,5.0],[-5.0,5.0],[-2.0,2.0]]
 data:
   input_folder: /var/local/storage/kfoteinos/tornado_subset
   output: /home/kfoteinos/VSLAM/tornado_subset_output
